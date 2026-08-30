@@ -109,8 +109,6 @@ final class SearchPanel {
                     ? "Logged in as " + accountName
                     : "Logged in (" + sourceLabel(YtAuthSession.getSource()) + ")";
             actionLabel = "Log out";
-        } else if (authStatus == YtAuthSession.Status.CHECKING) {
-            authText = "Checking for an existing YouTube login...";
         } else {
             authText = "Not logged in";
             actionLabel = "Paste cookie";
@@ -214,9 +212,6 @@ final class SearchPanel {
 
     private static String sourceLabel(YtAuthSession.Source source) {
         return switch (source) {
-            case FIREFOX -> "Firefox";
-            case CHROME -> "Chrome";
-            case EDGE -> "Edge";
             case PASTED -> "pasted cookie";
             case NONE -> "";
         };

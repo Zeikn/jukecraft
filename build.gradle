@@ -18,9 +18,6 @@ loom {
 	}
 }
 
-// Direct-connect YTM playback (search + stream-URL extraction + Opus decode),
-// bundled into the mod jar via Loom's `include` so players don't need to
-// install anything extra. NewPipeExtractor is GPL-3.0 -- see LICENSE.
 def lwjglNatives = "natives-windows"
 
 dependencies {
@@ -39,11 +36,6 @@ dependencies {
 
 	include implementation("org.lwjgl:lwjgl-opus:3.3.3")
 	include runtimeOnly("org.lwjgl:lwjgl-opus:3.3.3:${lwjglNatives}")
-
-	// Reads the user's existing YouTube Music login straight out of their
-	// browser's local cookie database (Firefox: plaintext SQLite. Chrome/
-	// Edge: only pre-App-Bound-Encryption profiles -- see BrowserCookieReader).
-	include implementation("org.xerial:sqlite-jdbc:3.53.4.0")
 }
 
 processResources {

@@ -54,10 +54,10 @@ public final class AccountsPanel {
             "",
             "Personalized search + taste-based",
             "autoplay need a logged-in YouTube",
-            "account -- auto-detected from Firefox,",
-            "or paste a cookie in the Accounts tab",
-            "(music.youtube.com, DevTools -> Network,",
-            "copy the \"cookie\" header).",
+            "account -- log into music.youtube.com,",
+            "DevTools -> Network, copy the \"cookie\"",
+            "header, and paste it in the Accounts",
+            "tab.",
     };
 
     private static final String YTMFLOAT_URL = "https://github.com/Zeikn/YTMFloat";
@@ -231,9 +231,6 @@ public final class AccountsPanel {
 
     private static String sourceLabel(YtAuthSession.Source source) {
         return switch (source) {
-            case FIREFOX -> "Firefox";
-            case CHROME -> "Chrome";
-            case EDGE -> "Edge";
             case PASTED -> "Pasted cookie";
             case NONE -> "";
         };

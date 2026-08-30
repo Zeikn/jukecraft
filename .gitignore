@@ -12,3 +12,6 @@ out/
 .vscode/
 spotifloat/
 ytmfloat/
+# A git worktree for parallel 26.2 development -- lives inside this same
+# checkout, must never be tracked as part of the 1.21.1 branch's own tree.
+/jukecraft 26.2/

@@ -21,22 +21,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public final class YtAuthSession {
     private static final Logger LOGGER = LoggerFactory.getLogger("jukeraft-ytdirect-auth");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path FILE = FabricLoader.getInstance().getGameDir().resolve("jukeraft-auth.json");
-    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor(r -> {
-        Thread t = new Thread(r, "jukeraft-ytdirect-auth-detect");
-        t.setDaemon(true);
-        return t;
-    });
 
-    public enum Source { NONE, FIREFOX, CHROME, EDGE, PASTED }
+    public enum Source { NONE, PASTED }
 
-    public enum Status { CHECKING, LOGGED_OUT, LOGGED_IN }
+    public enum Status { LOGGED_OUT, LOGGED_IN }
 
     private static final class Account {
         String id;
@@ -58,42 +51,25 @@ public final class YtAuthSession {
     }
 
     private static volatile Data data = new Data();
-    private static volatile Status status = Status.CHECKING;
-    private static volatile boolean autoDetectStarted;
+    private static volatile Status status = Status.LOGGED_OUT;
+    private static volatile boolean initialized;
 
     private YtAuthSession() {
     }
 
     public static synchronized void init() {
-        if (autoDetectStarted) {
+        if (initialized) {
             return;
         }
-        autoDetectStarted = true;
+        initialized = true;
         data = load();
+        status = getActiveAccountInternal() != null ? Status.LOGGED_IN : Status.LOGGED_OUT;
         if (!data.accounts.isEmpty()) {
-            status = getActiveAccountInternal() != null ? Status.LOGGED_IN : Status.LOGGED_OUT;
             LOGGER.info("Restored {} saved YouTube account(s)", data.accounts.size());
             for (Account a : data.accounts) {
                 refreshAccountInfo(a);
             }
-            return;
         }
-        status = Status.CHECKING;
-        EXECUTOR.submit(YtAuthSession::runAutoDetect);
-    }
-
-    private static void runAutoDetect() {
-        try {
-            BrowserCookieReader.Found found = BrowserCookieReader.autoDetect();
-            if (found != null) {
-                addAccount(found.source(), found.cookies());
-                LOGGER.info("Auto-detected an existing YouTube login via {}", found.source());
-                return;
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Browser cookie auto-detect failed", e);
-        }
-        status = Status.LOGGED_OUT;
     }
 
     public static boolean setPastedCookieHeader(String raw) {
