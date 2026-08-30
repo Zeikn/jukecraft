@@ -1,0 +1,12 @@
+.gradle/
+build/
+run/
+!run/config/
+jukeraft-auth.json
+*.log
+.idea/
+*.iml
+out/
+.vscode/
+spotifloat/
+ytmfloat/

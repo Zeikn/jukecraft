@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>YTM Float</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="card" class="no-track">
+      <button id="close-btn" class="close-btn" title="Hide">&times;</button>
+
+      <div class="now-playing">
+        <img id="thumbnail" alt="" />
+        <div class="meta">
+          <div id="title" class="title">Not playing</div>
+          <div id="artist" class="artist">Open YouTube Music in Opera</div>
+        </div>
+        <button id="fx-toggle" class="icon-button" title="Audio effects">
+          <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3zm4 4h2V7H7zm4 4h2V3h-2zm4-6h2v-6h-2zm4 2h2v-8h-2z" /></svg>
+        </button>
+        <button id="compact-toggle" class="icon-button" title="Compact mode">
+          <svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z" /></svg>
+        </button>
+      </div>
+
+      <div class="seek-row">
+        <span id="current-time" class="time">0:00</span>
+        <input id="seek" type="range" min="0" max="1000" value="0" />
+        <span id="duration" class="time">0:00</span>
+      </div>
+
+      <div class="controls-row">
+        <button id="shuffle" class="icon-button small" title="Shuffle">
+          <svg viewBox="0 0 24 24"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04z" /></svg>
+        </button>
+        <button id="prev" class="icon-button" title="Previous">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" /></svg>
+        </button>
+        <button id="play-pause" class="play-button" title="Play/Pause">
+          <svg id="play-icon" class="active" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+          <svg id="pause-icon" viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>
+        </button>
+        <button id="next" class="icon-button" title="Next">
+          <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z" /></svg>
+        </button>
+        <button id="repeat" class="icon-button small" title="Repeat">
+          <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2z" /></svg>
+        </button>
+
+        <svg class="icon volume-icon" viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10z" /></svg>
+        <input id="volume" type="range" min="0" max="100" value="100" />
+        <button id="queue-toggle" class="icon-button" title="Up next" aria-expanded="false">
+          <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z" /></svg>
+        </button>
+      </div>
+
+      <div id="queue-panel" class="queue-panel">
+        <div id="queue-list" class="queue-list"></div>
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>
