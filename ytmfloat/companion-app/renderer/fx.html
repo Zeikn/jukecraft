@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>YTM Float FX</title>
+    <link rel="stylesheet" href="fx.css" />
+  </head>
+  <body>
+    <div id="fx-card">
+      <button id="fx-close-btn" class="close-btn" title="Hide">&times;</button>
+      <div class="fx-title">Audio Effects</div>
+
+      <div class="fx-section">
+        <div class="fx-section-label">Equalizer</div>
+        <div class="eq-bands" id="eq-bands"></div>
+        <div class="fx-presets" id="fx-presets"></div>
+      </div>
+
+      <div class="fx-section">
+        <div class="fx-row">
+          <label>Reverb</label>
+          <input id="reverb" type="range" min="0" max="100" value="0" />
+          <span id="reverb-value" class="fx-value">0%</span>
+        </div>
+        <div class="fx-row">
+          <label>Stereo width</label>
+          <input id="width" type="range" min="0" max="200" value="100" />
+          <span id="width-value" class="fx-value">100%</span>
+        </div>
+      </div>
+
+      <button id="fx-reset" class="fx-reset-btn">Reset</button>
+    </div>
+    <script src="fx.js"></script>
+  </body>
+</html>

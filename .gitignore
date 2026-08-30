@@ -1,0 +1,14 @@
+.gradle/
+build/
+run/
+!run/config/
+# Holds the user's real YouTube session cookie -- must never be tracked,
+# even if run/config/ ever gets un-ignored further or the file is moved there.
+jukeraft-auth.json
+*.log
+.idea/
+*.iml
+out/
+.vscode/
+spotifloat/
+ytmfloat/

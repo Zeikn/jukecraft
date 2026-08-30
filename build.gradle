@@ -1,0 +1,87 @@
+plugins {
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'maven-publish'
+}
+
+repositories {
+	maven { url 'https://jitpack.io' }
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"jukeraft" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+// Direct-connect YTM playback (search + stream-URL extraction + Opus decode),
+// bundled into the mod jar via Loom's `include` so players don't need to
+// install anything extra. NewPipeExtractor is GPL-3.0 -- see LICENSE.
+def lwjglNatives = "natives-windows"
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	include implementation("com.github.TeamNewPipe:NewPipeExtractor:v0.26.5")
+	include implementation("com.github.TeamNewPipe:nanojson:e9d656ddb49a412a5a0a5d5ef20ca7ef09549996")
+	include implementation("org.jsoup:jsoup:1.22.2")
+	include implementation("com.google.protobuf:protobuf-javalite:4.35.1")
+	include implementation("org.mozilla:rhino:1.8.1")
+	include implementation("org.mozilla:rhino-engine:1.8.1")
+
+	include implementation("org.lwjgl:lwjgl-opus:3.3.3")
+	include runtimeOnly("org.lwjgl:lwjgl-opus:3.3.3:${lwjglNatives}")
+
+	// Reads the user's existing YouTube Music login straight out of their
+	// browser's local cookie database (Firefox: plaintext SQLite. Chrome/
+	// Edge: only pre-App-Bound-Encryption profiles -- see BrowserCookieReader).
+	include implementation("org.xerial:sqlite-jdbc:3.53.4.0")
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+	def projectName = project.name
+	inputs.property "projectName", projectName
+
+	from("LICENSE") {
+		rename { "${it}_$projectName"}
+	}
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+	}
+}
